@@ -4,7 +4,8 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sls offline"
   },
   "engines": {
     "node": ">=14.15.0"
@@ -19,6 +20,7 @@
     "@serverless/typescript": "^2.23.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/node": "^14.14.25",
+    "aws-sdk": "^2.858.0",
     "json-schema-to-ts": "^1.5.0",
     "serverless": "^2.23.0",
     "serverless-offline": "^6.8.0",

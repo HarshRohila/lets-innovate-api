@@ -1,8 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 
 import hello from '@functions/hello';
+import createIdea from '@functions/create-idea';
 
-const TABLE_NAME = 'ideas';
+const TABLE_NAME = 'idea';
 
 const serverlessConfiguration: AWS = {
   service: 'lets-innovate-api',
@@ -11,6 +12,12 @@ const serverlessConfiguration: AWS = {
     webpack: {
       webpackConfig: './webpack.config.js',
       includeModules: true,
+    },
+    dynamodb: {
+      stages: ['dev'],
+      start: {
+        migrate: true,
+      },
     },
   },
   resources: {
@@ -21,14 +28,22 @@ const serverlessConfiguration: AWS = {
           TableName: TABLE_NAME,
           AttributeDefinitions: [
             {
-              AttributeName: 'email',
+              AttributeName: 'title',
+              AttributeType: 'S',
+            },
+            {
+              AttributeName: 'description',
               AttributeType: 'S',
             },
           ],
           KeySchema: [
             {
-              AttributeName: 'email',
+              AttributeName: 'title',
               KeyType: 'HASH',
+            },
+            {
+              AttributeName: 'description',
+              KeyType: 'string',
             },
           ],
           ProvisionedThroughput: {
@@ -53,7 +68,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { hello },
+  functions: { hello, createIdea },
 };
 
 module.exports = serverlessConfiguration;
