@@ -17,8 +17,13 @@ class Database {
       TableName: tableName,
       Item: record,
     };
-    const res = await this.client.put(putInput).promise();
-    console.log(res);
+
+    try {
+      await this.client.put(putInput).promise();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   async select(tableName: string, query: string) {
@@ -27,8 +32,13 @@ class Database {
       ProjectionExpression: query,
     };
 
-    const data = await this.client.scan(params).promise();
-    return data.Items;
+    try {
+      const data = await this.client.scan(params).promise();
+      return data.Items;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   getOperationsOnTable<T>(tableName: string) {
@@ -43,7 +53,8 @@ export class DbOperations<T> {
     await this.db.insert(this.tableName, record);
   }
 
-  select(query: string) {
+  select(query: string): Promise<T[]> {
+    // @ts-ignore
     return this.db.select(this.tableName, query);
   }
 }

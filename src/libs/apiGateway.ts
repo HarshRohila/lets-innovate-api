@@ -9,9 +9,17 @@ export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<
   APIGatewayProxyResult
 >;
 
-export const formatJSONResponse = (response: Record<string, unknown>, statusCode = 200) => {
+export const formatJSONResponse = (response: unknown, statusCode = 200) => {
   return {
     statusCode,
     body: JSON.stringify(response),
   };
+};
+
+export const errorResponse = (statusCode: number, ...errorMsgs: string[]) => {
+  return formatJSONResponse({ errors: errorMsgs }, statusCode);
+};
+
+export const defaultErrorResponse = () => {
+  return errorResponse(500, 'Internal Server Error');
 };

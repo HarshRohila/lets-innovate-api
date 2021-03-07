@@ -1,6 +1,6 @@
 import 'source-map-support/register';
 
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
+import { defaultErrorResponse, ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 
@@ -13,7 +13,12 @@ const createIdea: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (eve
     description: event.body.description,
   };
 
-  await ideaService.createIdea(idea);
+  try {
+    await ideaService.createIdea(idea);
+  } catch (error) {
+    console.error(error);
+    return defaultErrorResponse();
+  }
 
   return formatJSONResponse(idea, 201);
 };
