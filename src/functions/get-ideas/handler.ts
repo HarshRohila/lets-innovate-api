@@ -4,18 +4,16 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 
-import schema from './schema';
 import ideaService from '@libs/services/idea';
+import Idea from '@libs/daos/idea';
 
-const createIdea: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
-  const idea = {
-    title: event.body.title,
-    description: event.body.description,
-  };
+const createIdea: ValidatedEventAPIGatewayProxyEvent<Idea> = async () => {
+  const ideas = await ideaService.getIdeas();
 
-  await ideaService.createIdea(idea);
+  // @ts-ignore
+  const response = formatJSONResponse(ideas);
 
-  return formatJSONResponse(idea, 201);
+  return response;
 };
 
 export const main = middyfy(createIdea);

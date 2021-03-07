@@ -11,6 +11,10 @@ class IdeaService {
   async createIdea(idea: Idea) {
     await this.db.insert(idea);
   }
+
+  getIdeas() {
+    return this.db.select('title, description');
+  }
 }
 
 const ideaService = new IdeaService();

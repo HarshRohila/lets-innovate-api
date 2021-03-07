@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 
 import hello from '@functions/hello';
 import createIdea from '@functions/create-idea';
+import getIdeas from '@functions/get-ideas';
 
 const TABLE_NAME = 'idea';
 
@@ -68,7 +69,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { hello, createIdea },
+  functions: { hello, createIdea, getIdeas },
 };
 
 module.exports = serverlessConfiguration;
